@@ -1,14 +1,15 @@
 package email.com.gmail.thananon.oat.myquiz.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface QuestionDao {
     @Query("SELECT * FROM questions")
-    fun getQuestions() : List<Question>
+    fun getQuestions() : LiveData<List<Question>>
 
     @Query("SELECT * FROM questions WHERE id = :id LIMIT 1")
-    fun getQuestion(id: Int): Question
+    fun getQuestion(id: Int): LiveData<Question?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertQuestion(question: Question)
