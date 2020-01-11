@@ -60,9 +60,9 @@ class QuestionListFragment : Fragment() {
 
         val questionText: TextView = itemView.findViewById(R.id.questionText)
 
-        fun bind(question: Question) {
+        fun bind(question: Question, position: Int) {
             this.question = question
-            questionText.text = question.text
+            questionText.text = getString(R.string.question_template, position, question.text)
         }
     }
 
@@ -80,7 +80,7 @@ class QuestionListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: QuestionHolder, position: Int) {
             val question = questions[position]
-            holder.bind(question)
+            holder.bind(question, position + 1)
         }
     }
 }
