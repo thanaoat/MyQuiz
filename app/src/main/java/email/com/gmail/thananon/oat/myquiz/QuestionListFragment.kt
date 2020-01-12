@@ -1,5 +1,6 @@
 package email.com.gmail.thananon.oat.myquiz
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,9 +19,20 @@ private const val TAG = "QuestionListFragment"
 
 class QuestionListFragment : Fragment() {
 
+    interface Callbacks {
+        fun onQuestionSelected(questionId: Int)
+    }
+
+    private var callbacks: Callbacks? = null
+
     private lateinit var questionRecyclerView: RecyclerView
     private var adapter: QuestionAdapter = QuestionAdapter(emptyList())
     private var questionsLiveData: LiveData<List<Question>> = QuestionRepository.get().getQuestions()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,20 +61,33 @@ class QuestionListFragment : Fragment() {
         )
     }
 
-    fun updateUI(questions: List<Question>) {
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
+    private fun updateUI(questions: List<Question>) {
         adapter = QuestionAdapter(questions)
         questionRecyclerView.adapter = adapter
     }
 
     private inner class QuestionHolder(view: View)
-        : RecyclerView.ViewHolder(view) {
+        : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var question: Question
 
         val questionText: TextView = itemView.findViewById(R.id.questionText)
 
+        init {
+            itemView.setOnClickListener(this)
+        }
+
         fun bind(question: Question, position: Int) {
             this.question = question
             questionText.text = getString(R.string.question_template, position, question.text)
+        }
+
+        override fun onClick(v: View?) {
+            callbacks?.onQuestionSelected(question.id)
         }
     }
 
