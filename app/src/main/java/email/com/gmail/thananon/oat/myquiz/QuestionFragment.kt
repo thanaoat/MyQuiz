@@ -22,11 +22,9 @@ private const val ARG_QUESTION_ID = "question_id"
 
 class QuestionFragment: Fragment() {
 
-    private var draftQuestionText = ""
     private lateinit var edtDraftQuestionText: EditText
     private lateinit var btnAddChoice: Button
     private lateinit var btnSave: Button
-    private var questionLiveData: LiveData<Question?>? = null
     private val questionViewModel: QuestionViewModel by lazy {
         ViewModelProviders.of(this).get(QuestionViewModel::class.java)
     }
@@ -34,7 +32,7 @@ class QuestionFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val questionId = arguments?.getInt(ARG_QUESTION_ID)
-        questionLiveData = QuestionRepository.get().getQuestion(questionId ?: 0)
+        questionViewModel.loadQuestion(questionId ?: 0)
     }
 
     override fun onCreateView(
@@ -53,14 +51,13 @@ class QuestionFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        questionLiveData?.observe(
+        questionViewModel.questionLiveData.observe(
             viewLifecycleOwner,
             Observer { question ->
                 question?.let {
                     if (questionViewModel.draftQuestion == null) {
                         questionViewModel.draftQuestion = question
                     }
-                    Log.d(TAG, "questionViewModel.draftQuestion: ${questionViewModel.draftQuestion}")
                     updateUI()
                 }
             }
@@ -85,14 +82,11 @@ class QuestionFragment: Fragment() {
         }
 
         btnSave.setOnClickListener {
-            val question = questionViewModel.draftQuestion
-            if (question != null) {
-                questionViewModel.saveQuestion(question)
-            }
+            questionViewModel.saveDraftQuestion()
         }
     }
 
-    fun updateUI() {
+    private fun updateUI() {
         edtDraftQuestionText.setText(questionViewModel.draftQuestion?.text)
     }
 
