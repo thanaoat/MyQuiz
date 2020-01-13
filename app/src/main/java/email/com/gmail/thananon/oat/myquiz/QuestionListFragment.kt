@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -80,9 +81,6 @@ class QuestionListFragment : Fragment() {
         return when(item.itemId) {
             R.id.new_question -> {
                 callbacks?.onQuestionSelected(0)
-//                questionListViewModel.addQuestion(question)
-//                callbacks?.onQuestionSelected()
-
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -99,6 +97,7 @@ class QuestionListFragment : Fragment() {
         private lateinit var question: Question
 
         val questionText: TextView = itemView.findViewById(R.id.questionText)
+        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
 
         init {
             itemView.setOnClickListener(this)
@@ -107,6 +106,9 @@ class QuestionListFragment : Fragment() {
         fun bind(question: Question, position: Int) {
             this.question = question
             questionText.text = getString(R.string.question_template, position, question.text)
+            btnDelete.setOnClickListener {
+                questionListViewModel.deleteQuestion(this.question)
+            }
         }
 
         override fun onClick(v: View?) {
