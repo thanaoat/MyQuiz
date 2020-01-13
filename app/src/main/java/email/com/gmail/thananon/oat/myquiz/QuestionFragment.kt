@@ -54,12 +54,8 @@ class QuestionFragment: Fragment() {
         questionViewModel.questionLiveData.observe(
             viewLifecycleOwner,
             Observer { question ->
-                question?.let {
-                    if (questionViewModel.draftQuestion == null) {
-                        questionViewModel.draftQuestion = question
-                    }
-                    updateUI()
-                }
+                questionViewModel.updateDraftQuestion(question)
+                updateUI()
             }
         )
     }

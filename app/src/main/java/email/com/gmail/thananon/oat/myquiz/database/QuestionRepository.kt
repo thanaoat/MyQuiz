@@ -21,9 +21,15 @@ class QuestionRepository private constructor(context: Context){
 
     fun getQuestion(id: Int): LiveData<Question?> = questionDao.getQuestion(id)
 
-    fun saveQuestion(question: Question) {
+    fun updateQuestion(question: Question) {
         executors.execute {
             questionDao.updateQuestion(question)
+        }
+    }
+
+    fun insertQuestion(question: Question) {
+        executors.execute {
+            questionDao.insertQuestion(question)
         }
     }
 

@@ -27,7 +27,11 @@ class QuestionViewModel: ViewModel() {
     }
 
     private fun saveQuestion(question: Question) {
-        questionRepository.saveQuestion(question)
+        if (question.id == 0) {
+            questionRepository.insertQuestion(question)
+        } else {
+            questionRepository.updateQuestion(question)
+        }
     }
 
     fun saveDraftQuestion() {
@@ -35,5 +39,9 @@ class QuestionViewModel: ViewModel() {
         if (question != null) {
             saveQuestion(question)
         }
+    }
+
+    fun updateDraftQuestion(question: Question?) {
+        draftQuestion = draftQuestion ?: question ?: Question()
     }
 }

@@ -3,17 +3,15 @@ package email.com.gmail.thananon.oat.myquiz
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import email.com.gmail.thananon.oat.myquiz.database.Question
-import email.com.gmail.thananon.oat.myquiz.database.QuestionRepository
+import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionListViewModel
 
 private const val TAG = "QuestionListFragment"
 
@@ -27,11 +25,18 @@ class QuestionListFragment : Fragment() {
 
     private lateinit var questionRecyclerView: RecyclerView
     private var adapter: QuestionAdapter = QuestionAdapter(emptyList())
-    private var questionsLiveData: LiveData<List<Question>> = QuestionRepository.get().getQuestions()
+    private val questionListViewModel: QuestionListViewModel by lazy {
+        ViewModelProviders.of(this).get(QuestionListViewModel::class.java)
 
+}
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -50,7 +55,7 @@ class QuestionListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        questionsLiveData.observe(
+        questionListViewModel.questionsLiveData.observe(
             viewLifecycleOwner,
             Observer { questions ->
                 questions?.let {
@@ -64,6 +69,24 @@ class QuestionListFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_question_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.new_question -> {
+                callbacks?.onQuestionSelected(0)
+//                questionListViewModel.addQuestion(question)
+//                callbacks?.onQuestionSelected()
+
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun updateUI(questions: List<Question>) {
