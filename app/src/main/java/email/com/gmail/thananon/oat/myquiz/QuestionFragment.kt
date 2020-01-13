@@ -10,8 +10,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import email.com.gmail.thananon.oat.myquiz.database.Question
+import email.com.gmail.thananon.oat.myquiz.database.QuestionRepository
+import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionViewModel
 
 private const val TAG = "QuestionFragment"
+private const val ARG_QUESTION_ID = "question_id"
 
 class QuestionFragment: Fragment() {
 
@@ -19,6 +26,16 @@ class QuestionFragment: Fragment() {
     private lateinit var edtDraftQuestionText: EditText
     private lateinit var btnAddChoice: Button
     private lateinit var btnSave: Button
+    private var questionLiveData: LiveData<Question?>? = null
+    private val questionViewModel: QuestionViewModel by lazy {
+        ViewModelProviders.of(this).get(QuestionViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val questionId = arguments?.getInt(ARG_QUESTION_ID)
+        questionLiveData = QuestionRepository.get().getQuestion(questionId ?: 0)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +51,22 @@ class QuestionFragment: Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        questionLiveData?.observe(
+            viewLifecycleOwner,
+            Observer { question ->
+                question?.let {
+                    if (questionViewModel.draftQuestion == null) {
+                        questionViewModel.draftQuestion = question
+                    }
+                    Log.d(TAG, "questionViewModel.draftQuestion: ${questionViewModel.draftQuestion}")
+                    updateUI()
+                }
+            }
+        )
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -41,7 +74,7 @@ class QuestionFragment: Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                draftQuestionText = s.toString()
+                questionViewModel.draftQuestion?.text = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -52,7 +85,26 @@ class QuestionFragment: Fragment() {
         }
 
         btnSave.setOnClickListener {
-            Log.d(TAG, "btnSave clicked")
+            val question = questionViewModel.draftQuestion
+            if (question != null) {
+                questionViewModel.saveQuestion(question)
+            }
+        }
+    }
+
+    fun updateUI() {
+        edtDraftQuestionText.setText(questionViewModel.draftQuestion?.text)
+    }
+
+    companion object {
+        fun newInstance(questionId: Int): QuestionFragment {
+            val args = Bundle().apply {
+                putInt(ARG_QUESTION_ID, questionId)
+            }
+
+            return QuestionFragment().apply {
+                arguments = args
+            }
         }
     }
 }

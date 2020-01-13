@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "questions")
 data class Question(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "text") val text: String?,
-    @ColumnInfo(name = "correct_choice") val correctChoice: Int?
+    @ColumnInfo(name = "text") var text: String?,
+    @ColumnInfo(name = "correct_choice") var correctChoice: Int?
 )

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), QuestionListFragment.Callbacks {
 
     override fun onQuestionSelected(questionId: Int) {
         Log.d(TAG, "questionId: $questionId")
-        val fragment = QuestionFragment()
+        val fragment = QuestionFragment.newInstance(questionId)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)

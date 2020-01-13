@@ -14,11 +14,18 @@ class QuestionRepository private constructor(context: Context){
         DB_NAME
     ).build()
 
-    val questionDao = database.questionDao()
+    private val questionDao = database.questionDao()
+    private val executors = Executors.newSingleThreadExecutor()
 
     fun getQuestions(): LiveData<List<Question>> = questionDao.getQuestions()
 
     fun getQuestion(id: Int): LiveData<Question?> = questionDao.getQuestion(id)
+
+    fun saveQuestion(question: Question) {
+        executors.execute {
+            questionDao.updateQuestion(question)
+        }
+    }
 
     companion object {
         private  var INSTANCE: QuestionRepository? = null
