@@ -15,8 +15,10 @@ import email.com.gmail.thananon.oat.myquiz.database.Question
 import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionListViewModel
 
 private const val TAG = "QuestionListFragment"
+private const val REQUEST_DELETE = 0
+private const val DIALOG_DELETE = "DialogDelete"
 
-class QuestionListFragment : Fragment() {
+class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
 
     interface Callbacks {
         fun onQuestionSelected(questionId: Int)
@@ -92,6 +94,10 @@ class QuestionListFragment : Fragment() {
         questionRecyclerView.adapter = adapter
     }
 
+    override fun onConfirmDelete(question: Question) {
+        questionListViewModel.deleteQuestion(question)
+    }
+
     private inner class QuestionHolder(view: View)
         : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var question: Question
@@ -107,7 +113,10 @@ class QuestionListFragment : Fragment() {
             this.question = question
             questionText.text = getString(R.string.question_template, position, question.text)
             btnDelete.setOnClickListener {
-                questionListViewModel.deleteQuestion(this.question)
+                DeleteDialogFragment.newInstance(this.question).apply {
+                    setTargetFragment(this@QuestionListFragment, REQUEST_DELETE)
+                    show(this@QuestionListFragment.requireFragmentManager(), DIALOG_DELETE)
+                }
             }
         }
 
