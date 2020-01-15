@@ -13,7 +13,8 @@ class QuestionRepository private constructor(context: Context){
         context.applicationContext,
         AppDatabase::class.java,
         DB_NAME
-    ).build()
+    ).addMigrations(migration_1_to_2)
+        .build()
 
     private val questionDao = database.questionDao()
     private val executors = Executors.newSingleThreadExecutor()
