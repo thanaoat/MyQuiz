@@ -1,11 +1,10 @@
 package email.com.gmail.thananon.oat.myquiz.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import email.com.gmail.thananon.oat.myquiz.database.Question
+import email.com.gmail.thananon.oat.myquiz.models.Question
 import email.com.gmail.thananon.oat.myquiz.database.QuestionRepository
 
 private const val TAG = "QuestionViewModel"

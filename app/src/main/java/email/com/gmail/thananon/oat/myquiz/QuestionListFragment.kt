@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import email.com.gmail.thananon.oat.myquiz.database.Question
+import email.com.gmail.thananon.oat.myquiz.models.Question
 import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionListViewModel
 
 private const val TAG = "QuestionListFragment"

@@ -1,7 +1,7 @@
 package email.com.gmail.thananon.oat.myquiz.viewModels
 
 import androidx.lifecycle.ViewModel
-import email.com.gmail.thananon.oat.myquiz.database.Question
+import email.com.gmail.thananon.oat.myquiz.models.Question
 import email.com.gmail.thananon.oat.myquiz.database.QuestionRepository
 
 class QuestionListViewModel: ViewModel() {

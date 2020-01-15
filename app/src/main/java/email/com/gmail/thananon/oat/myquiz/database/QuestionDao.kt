@@ -2,6 +2,7 @@ package email.com.gmail.thananon.oat.myquiz.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import email.com.gmail.thananon.oat.myquiz.models.Question
 
 @Dao
 interface QuestionDao {

@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import email.com.gmail.thananon.oat.myquiz.database.Question
+import email.com.gmail.thananon.oat.myquiz.models.Question
 
 private const val ARG_QUESTION = "question"
 

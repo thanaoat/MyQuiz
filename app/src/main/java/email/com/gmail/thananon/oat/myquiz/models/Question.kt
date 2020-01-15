@@ -1,4 +1,4 @@
-package email.com.gmail.thananon.oat.myquiz.database
+package email.com.gmail.thananon.oat.myquiz.models
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
