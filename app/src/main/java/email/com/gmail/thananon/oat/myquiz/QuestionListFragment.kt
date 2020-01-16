@@ -17,6 +17,7 @@ import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionListViewModel
 private const val TAG = "QuestionListFragment"
 private const val REQUEST_DELETE = 0
 private const val DIALOG_DELETE = "DialogDelete"
+private const val DIALOG_CREATE = "DialogCreate"
 
 class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
 
@@ -82,7 +83,10 @@ class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.new_question -> {
-                callbacks?.onQuestionSelected(0)
+                NewQuestionDialogFragment().show(
+                    this@QuestionListFragment.requireFragmentManager(),
+                    DIALOG_CREATE
+                )
                 true
             }
             else -> return super.onOptionsItemSelected(item)

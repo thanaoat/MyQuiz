@@ -6,4 +6,6 @@
     <string name="question_template">%1$d.) %2$s</string>
     <string name="new_question">New Question</string>
     <string name="confirm_delete_question">Delete this question?</string>
+    <string name="done">Done</string>
+    <string name="candel">Cancel</string>
 </resources>

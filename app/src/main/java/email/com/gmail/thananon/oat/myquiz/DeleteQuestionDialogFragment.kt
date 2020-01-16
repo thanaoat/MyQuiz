@@ -17,7 +17,7 @@ class DeleteDialogFragment: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val question =arguments?.getParcelable<Question>(ARG_QUESTION)
+            val question = arguments?.getParcelable<Question>(ARG_QUESTION)
             question?.let {question ->
                 builder.setTitle(getString(R.string.confirm_delete_question))
                     .setMessage(question.text)
