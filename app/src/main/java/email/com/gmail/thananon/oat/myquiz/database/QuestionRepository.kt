@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import email.com.gmail.thananon.oat.myquiz.models.Choice
 import email.com.gmail.thananon.oat.myquiz.models.Question
+import email.com.gmail.thananon.oat.myquiz.models.QuestionWithChoices
 import java.util.concurrent.Executors
 
 private const val DB_NAME = "MyQuiz"
@@ -23,6 +24,8 @@ class QuestionRepository private constructor(context: Context){
     fun getQuestions(): LiveData<List<Question>> = questionDao.getQuestions()
 
     fun getQuestion(id: Int): LiveData<Question?> = questionDao.getQuestion(id)
+
+    fun getQuestionWithChoices(id: Int): LiveData<QuestionWithChoices?> = questionDao.getQuestionWithChoices(id)
 
     fun updateQuestion(question: Question) {
         executors.execute {

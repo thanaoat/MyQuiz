@@ -17,18 +17,21 @@ class NewChoiceDialogFragment: DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+            val builder = AlertDialog.Builder(it)
+            val question = arguments?.getParcelable<Question>(ARG_QUESTION)
             val inflater = requireActivity().layoutInflater
             val layout = inflater.inflate(R.layout.fragment_new_choice_dialog, null)
             edtChoiceText = layout.findViewById(R.id.edtChoiceText)
 
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle(getString(R.string.new_choice))
-                    .setView(layout)
-                    .setPositiveButton(getString(R.string.done)) { _, _ ->
-                        val text = edtChoiceText.text
-                        val choice = Choice(questionId = 0, text = text.toString())
-                        QuestionRepository.get().insertChoice(choice)
-                    }
+            if (question != null) {
+                builder.setTitle(getString(R.string.new_choice))
+                        .setView(layout)
+                        .setPositiveButton(getString(R.string.done)) { _, _ ->
+                            val text = edtChoiceText.text
+                            val choice = Choice(questionId = question.id, text = text.toString())
+                            QuestionRepository.get().insertChoice(choice)
+                        }
+            }
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")

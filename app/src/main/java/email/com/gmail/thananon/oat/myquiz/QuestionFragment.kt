@@ -32,6 +32,7 @@ class QuestionFragment: Fragment() {
     private val questionViewModel: QuestionViewModel by lazy {
         ViewModelProviders.of(this).get(QuestionViewModel::class.java)
     }
+    private var adapter = ChoiceAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class QuestionFragment: Fragment() {
         btnSave = view.findViewById(R.id.btnSave)
 
         choiceRecyclerView.layoutManager = LinearLayoutManager(context)
-//        rvChoices.adapter
+        choiceRecyclerView.adapter = adapter
 
         return view
     }
@@ -62,7 +63,7 @@ class QuestionFragment: Fragment() {
         questionViewModel.questionLiveData.observe(
             viewLifecycleOwner,
             Observer { question ->
-                questionViewModel.updateDraftQuestion(question)
+                questionViewModel.updateDraft(question)
                 updateUI()
             }
         )
@@ -102,6 +103,18 @@ class QuestionFragment: Fragment() {
             } else {
                 isEnabled = false
             }
+        }
+
+        updateChoiceRecyclerView()
+    }
+
+    private fun updateChoiceRecyclerView() {
+        val choices = questionViewModel.draftChoices
+        Log.d(TAG, "choices: $choices")
+
+        if (choices != null) {
+            adapter = ChoiceAdapter(choices)
+            choiceRecyclerView.adapter = adapter
         }
     }
 
