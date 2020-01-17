@@ -3,6 +3,7 @@ package email.com.gmail.thananon.oat.myquiz.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import email.com.gmail.thananon.oat.myquiz.models.Choice
 import email.com.gmail.thananon.oat.myquiz.models.Question
 import java.util.concurrent.Executors
 
@@ -38,6 +39,12 @@ class QuestionRepository private constructor(context: Context){
     fun deleteQuestion(question: Question) {
         executors.execute {
             questionDao.deleteQuestion(question)
+        }
+    }
+
+    fun insertChoice(choice: Choice) {
+        executors.execute {
+            questionDao.insertChoice(choice)
         }
     }
 

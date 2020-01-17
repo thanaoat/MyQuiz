@@ -2,6 +2,7 @@ package email.com.gmail.thananon.oat.myquiz.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import email.com.gmail.thananon.oat.myquiz.models.Choice
 import email.com.gmail.thananon.oat.myquiz.models.Question
 import email.com.gmail.thananon.oat.myquiz.models.QuestionWithChoices
 
@@ -24,4 +25,7 @@ interface QuestionDao {
 
     @Query("SELECT * FROM questions WHERE id = :id LIMIT 1")
     fun getQuestionWithChoices(id: Int): LiveData<QuestionWithChoices?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertChoice(choice: Choice)
 }

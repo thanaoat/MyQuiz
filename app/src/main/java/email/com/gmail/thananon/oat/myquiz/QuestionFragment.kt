@@ -9,17 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import email.com.gmail.thananon.oat.myquiz.models.Choice
 import email.com.gmail.thananon.oat.myquiz.viewModels.QuestionViewModel
 
 private const val TAG = "QuestionFragment"
 private const val ARG_QUESTION_ID = "question_id"
+private const val DIALOG_CREATE_CHOICE = "DialogCreateChoice"
 
 class QuestionFragment: Fragment() {
 
     private lateinit var edtDraftQuestionText: EditText
+    private lateinit var choiceRecyclerView: RecyclerView
     private lateinit var btnAddChoice: Button
     private lateinit var btnSave: Button
     private val questionViewModel: QuestionViewModel by lazy {
@@ -40,8 +47,12 @@ class QuestionFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_question, container, false)
 
         edtDraftQuestionText = view.findViewById(R.id.edtDraftQuestionText)
+        choiceRecyclerView = view.findViewById(R.id.choiceRecyclerView)
         btnAddChoice = view.findViewById(R.id.btnAddChoice)
         btnSave = view.findViewById(R.id.btnSave)
+
+        choiceRecyclerView.layoutManager = LinearLayoutManager(context)
+//        rvChoices.adapter
 
         return view
     }
@@ -70,10 +81,6 @@ class QuestionFragment: Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        btnAddChoice.setOnClickListener {
-            Log.d(TAG, "btnAddChoice clicked")
-        }
-
         btnSave.setOnClickListener {
             questionViewModel.saveDraftQuestion()
         }
@@ -81,6 +88,56 @@ class QuestionFragment: Fragment() {
 
     private fun updateUI() {
         edtDraftQuestionText.setText(questionViewModel.draftQuestion?.text)
+
+        btnAddChoice.apply {
+            val question = questionViewModel.draftQuestion
+            if (question != null) {
+                setOnClickListener {
+                    val question = questionViewModel.draftQuestion
+                    if (question != null) {
+                        NewChoiceDialogFragment.newInstance(question)
+                                .show(this@QuestionFragment.requireFragmentManager(), DIALOG_CREATE_CHOICE)
+                    }
+                }
+            } else {
+                isEnabled = false
+            }
+        }
+    }
+
+    private inner class ChoiceHolder(view: View)
+        : RecyclerView.ViewHolder(view) {
+
+        private lateinit var choice: Choice
+
+        val choiceText: TextView = itemView.findViewById(R.id.choiceText)
+        val btnDelete: ImageButton = itemView.findViewById(R.id.btnDelete)
+
+        fun bind(choice: Choice) {
+            this.choice = choice
+            choiceText.text = choice.text
+            btnDelete.setOnClickListener {
+                Log.d(TAG, "btnDelete clicked")
+            }
+        }
+    }
+
+    private inner class ChoiceAdapter(var choices: List<Choice>)
+        : RecyclerView.Adapter<ChoiceHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChoiceHolder {
+            val view = layoutInflater.inflate(R.layout.list_item_choice, parent, false)
+            return ChoiceHolder(view)
+        }
+
+        override fun getItemCount(): Int {
+            return choices.size
+        }
+
+        override fun onBindViewHolder(holder: ChoiceHolder, position: Int) {
+            val choice = choices[position]
+            holder.bind(choice)
+        }
     }
 
     companion object {

@@ -19,16 +19,18 @@
         android:inputType="textPersonName"
         android:text="Name" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/choiceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <Button
         android:id="@+id/btnAddChoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_a_choice" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChoices"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnSave"
