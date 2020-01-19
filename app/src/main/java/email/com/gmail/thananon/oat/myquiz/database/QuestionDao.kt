@@ -29,4 +29,7 @@ interface QuestionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertChoice(choice: Choice)
+
+    @Delete
+    fun deleteChoice(choice: Choice)
 }

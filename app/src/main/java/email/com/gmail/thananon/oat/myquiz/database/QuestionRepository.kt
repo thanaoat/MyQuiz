@@ -51,6 +51,12 @@ class QuestionRepository private constructor(context: Context){
         }
     }
 
+    fun deleteChoice(choice: Choice) {
+        executors.execute {
+            questionDao.deleteChoice(choice)
+        }
+    }
+
     companion object {
         private  var INSTANCE: QuestionRepository? = null
 

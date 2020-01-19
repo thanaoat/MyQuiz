@@ -13,6 +13,10 @@ private const val ARG_QUESTION = "question"
 
 class NewChoiceDialogFragment: DialogFragment() {
 
+    interface Callbacks {
+        fun onPositiveCallback()
+    }
+
     private lateinit var edtChoiceText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

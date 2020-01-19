@@ -63,7 +63,6 @@ class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
             viewLifecycleOwner,
             Observer { questions ->
                 questions?.let {
-                    Log.d(TAG, "questions.size: ${questions.size}")
                     updateUI(questions)
                 }
             }

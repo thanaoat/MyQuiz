@@ -49,7 +49,7 @@ class QuestionViewModel: ViewModel() {
     }
 
     private fun updateDraftChoices(choices: MutableList<Choice>?) {
-        draftChoices = draftChoices ?: choices ?: mutableListOf()
+        draftChoices = choices ?: mutableListOf()
     }
 
     fun updateDraft(questionWithChoices: QuestionWithChoices?) {
