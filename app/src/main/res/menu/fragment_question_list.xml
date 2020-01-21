@@ -6,4 +6,8 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/new_question"
         app:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/take_a_quiz"
+        android:title="@string/take_a_quiz"
+        app:showAsAction="never" />
 </menu>
