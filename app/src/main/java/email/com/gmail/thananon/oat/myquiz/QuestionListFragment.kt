@@ -23,6 +23,7 @@ class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
 
     interface Callbacks {
         fun onQuestionSelected(questionId: Int)
+        fun onTakeAQuizMenuSelected()
     }
 
     private var callbacks: Callbacks? = null
@@ -31,8 +32,8 @@ class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
     private var adapter: QuestionAdapter = QuestionAdapter(emptyList())
     private val questionListViewModel: QuestionListViewModel by lazy {
         ViewModelProviders.of(this).get(QuestionListViewModel::class.java)
+    }
 
-}
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
@@ -86,6 +87,10 @@ class QuestionListFragment : Fragment(), DeleteDialogFragment.Callbacks {
                     this@QuestionListFragment.requireFragmentManager(),
                     DIALOG_CREATE
                 )
+                true
+            }
+            R.id.take_a_quiz -> {
+                callbacks?.onTakeAQuizMenuSelected()
                 true
             }
             else -> return super.onOptionsItemSelected(item)

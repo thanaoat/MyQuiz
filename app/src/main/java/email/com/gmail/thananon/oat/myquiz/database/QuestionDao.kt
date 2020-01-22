@@ -24,6 +24,10 @@ interface QuestionDao {
     fun updateQuestion(question: Question)
 
     @Transaction
+    @Query( "SELECT * FROM questions")
+    fun getQuestionsWithChoices() : LiveData<List<QuestionWithChoices>>
+
+    @Transaction
     @Query("SELECT * FROM questions WHERE id = :id LIMIT 1")
     fun getQuestionWithChoices(id: Int): LiveData<QuestionWithChoices?>
 

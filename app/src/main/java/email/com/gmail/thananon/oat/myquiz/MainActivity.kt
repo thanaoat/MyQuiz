@@ -24,8 +24,16 @@ class MainActivity : AppCompatActivity(), QuestionListFragment.Callbacks {
     }
 
     override fun onQuestionSelected(questionId: Int) {
-        Log.d(TAG, "questionId: $questionId")
         val fragment = QuestionFragment.newInstance(questionId)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onTakeAQuizMenuSelected() {
+        val fragment = QuizFragment()
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)

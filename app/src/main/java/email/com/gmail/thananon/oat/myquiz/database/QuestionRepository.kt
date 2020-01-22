@@ -25,6 +25,7 @@ class QuestionRepository private constructor(context: Context){
 
     fun getQuestion(id: Int): LiveData<Question?> = questionDao.getQuestion(id)
 
+    fun getQuestionsWithChoices(): LiveData<List<QuestionWithChoices>> = questionDao.getQuestionsWithChoices()
     fun getQuestionWithChoices(id: Int): LiveData<QuestionWithChoices?> = questionDao.getQuestionWithChoices(id)
 
     fun updateQuestion(question: Question) {
